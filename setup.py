@@ -1,11 +1,11 @@
-from setuptools import setup
+from setuptools import setuptools
 
-setup(
+setuptools.setup(
     name='full_wolf_but_sheep_dead',
-    version='0.0.1',
-    packages=[''],
-    url='',
-    license='',
+    version='1.0.0',
+    packages=setuptools.find_packages(),
+    url='https://github.com/Blazzeq/full_wolf_but_sheep_dead/',
+    license='MIT License',
     author='Maciej Błażewicz, Sebastian Nawrocki',
     author_email='224264@edu.p.lodz.pl',
     description='Simulation where wolf chases sheep'
