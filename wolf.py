@@ -30,23 +30,24 @@ class Wolf(Animal):
     def update_distance(self) -> Point:
 
         victim, can_be_killed, dist_to_victim = self.look_back(self.animal)
+        victim_index = self.animal.index(victim)
 
         if can_be_killed:
-            kill_message = f'Sheep #{self.animal.index(victim)} has been killed'
+            kill_message = f'Sheep #{victim_index} has been killed'
             logging.info(kill_message)
             print(kill_message)
             self.position.set(victim.position)
-            self.animal[self.animal.index(victim)] = None
+            self.animal[victim_index] = None
             return Point()
 
-        chase_message = f'Wolf is chasing sheep #{self.animal.index(victim)}'
+        chase_message = f'Wolf is chasing sheep #{victim_index}'
         logging.info(chase_message)
         print(chase_message)
 
         result = self.distance / (dist_to_victim - self.distance)
 
-        return Point(result*(victim.position.x - self.position.x) / (1 + result),
-                     result*(victim.position.y - self.position.y) / (1 + result))
+        return Point(result * (victim.position.x - self.position.x) / (1 + result),
+                     result * (victim.position.y - self.position.y) / (1 + result))
 
     def __str__(self):
-        return f'Wolf position: {str(self.position)}'
+        return f'Wolf is at {self.position}'

@@ -2,7 +2,7 @@ import logging
 
 
 class Point:
-    def __init__(self, x: float = 0, y: float = 0):
+    def __init__(self, x: float = 0.0, y: float = 0.0):
         self._x = x
         self._y = y
 
@@ -31,7 +31,7 @@ class Point:
             raise TypeError('y must be float type!')
 
     def set(self, point):
-        logging.debug('set() method called, point:' + str(point))
+        logging.debug(point)
         self._x = point.x
         self._y = point.y
 
@@ -41,4 +41,4 @@ class Point:
         return self
 
     def __str__(self):
-        return "(" + "%.3f" % self._x + ", " + "%.3f" % self._y + ")"
+        return "(" + "%.1f" % self._x + ", " + "%.1f" % self._y + ")"

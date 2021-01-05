@@ -8,19 +8,19 @@ from wolf import Wolf
 
 
 class Simulation:
-    def __init__(self, turns: int, sheep_number: int, init_pos_limit: float, sheep_move_dist: float,
+    def __init__(self, rounds: int, sheep_number: int, init_pos_limit: float, sheep_move_dist: float,
                  wolf_move_dist: float, wait: bool):
 
-        self.turns = turns
+        self.rounds = rounds
         self._animal = []
 
         for _ in range(sheep_number):
             s = Sheep(init_pos_limit, sheep_move_dist)
-            logging.info('Sheep #' + str(_) + 'start position' + str(s.position))
+            logging.info('Sheep #' + str(_) + ' start position at ' + str(s.position))
             self.animal.append(s)
 
         self._wolf = Wolf(wolf_move_dist, self.animal)
-        logging.info(str(self.wolf))
+        logging.info(f'Wolf start position at {self._wolf.position}')
         self.wait = wait
 
     @property
@@ -36,7 +36,7 @@ class Simulation:
                 if isinstance(_, Animal) is False:
                     raise TypeError('animal list can include only Animal type!')
         self._animal = animal
-        
+
     @property
     def wolf(self):
         return self._wolf
@@ -55,11 +55,7 @@ class Simulation:
         return result
 
     def are_sheep_alive(self) -> bool:
-        killed = 0
-        for _animal in self.animal:
-            if _animal is None:
-                killed += 1
-        return killed != len(self.animal)
+        return len(self.get_alive_animals()) != 0
 
     def simulate(self) -> [List, List]:
         turn = 0
@@ -69,17 +65,17 @@ class Simulation:
         logging.info('Start of the simulation\n')
         print('Start of the simulation\n')
 
-        while turn != self.turns and self.are_sheep_alive():
-            logging.info('Tour #' + str(turn) + 'has started')
-            print('Tour #' + str(turn))
+        while turn != self.rounds and self.are_sheep_alive():
+            logging.info('Round #' + str(turn) + ' has started')
+            print('Round #' + str(turn))
 
             for _ in self.animal:
                 if _ is not None:
-                    logging.info('Sheep #' + str(self.animal.index(_)) + ' is moving')
                     _.move()
-                    logging.info('Its position is' + str(_.position))
+                    logging.info(f'Sheep #{self.animal.index(_)} moved to {_.position}')
 
             self.wolf.move()
+            logging.info(f'Wolf moved to {self.wolf.position}')
 
             print('#######')
             print(self.wolf)
@@ -88,22 +84,25 @@ class Simulation:
             print(remaining_message)
             print('#######\n')
 
+            logging.debug('Saving animal positions')
             animal_positions = []
             for _ in self.animal:
                 animal_positions.append([_.position.x, _.position.y] if _ is not None else None)
 
             json.append({
-                'turn number': turn,
-                'wolf position': [self.wolf.position.x, self.wolf.position.y],
-                'sheep positions': animal_positions
+                'round_no': turn,
+                'wolf_pos': [self.wolf.position.x, self.wolf.position.y],
+                'sheep_pos': animal_positions
             })
 
             csv.append([turn, len(self.get_alive_animals())])
 
-            turn += 1
+            logging.info('Round #' + str(turn) + ' has ended\n')
 
             if self.wait:
                 getch()
+
+            turn += 1
 
         logging.info('End of the simulation')
         print('End of the simulation')

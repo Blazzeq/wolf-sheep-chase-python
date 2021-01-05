@@ -23,7 +23,7 @@ class Sheep(Animal):
     }
 
     def __init__(self, init_pos_limit: float = 10, sheep_move_dist: float = 0.5):
-        logging.debug(f'object initialization, init_pos_limit: {init_pos_limit}, sheep_move_dist: {sheep_move_dist}')
+        logging.debug(f'init_pos_limit: {init_pos_limit}, sheep_move_dist: {sheep_move_dist}')
         super().__init__(Point(uniform(-init_pos_limit, init_pos_limit),
                                uniform(-init_pos_limit, init_pos_limit)),
                          sheep_move_dist)
@@ -34,7 +34,7 @@ class Sheep(Animal):
                 WindRose.WEST,
                 WindRose.EAST][floor(uniform(0, 4))]
 
-        logging.info(f'Side: {side.name}')
-    
+        logging.info(f'Sheep is headed {side.name}')
+
         return Point(self.distance * Sheep.sides[side][0],
                      self.distance * Sheep.sides[side][1])

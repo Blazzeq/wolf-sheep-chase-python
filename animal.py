@@ -6,7 +6,7 @@ from point import Point
 
 class Animal:
     def __init__(self, position: Point, distance: float):
-        logging.debug(f'object initialization, position: {position}, distance: {distance}')
+        logging.debug(f'position: {position}, distance: {distance}')
         self._position = position
         self._distance = distance
 
@@ -16,7 +16,7 @@ class Animal:
 
     @position.setter
     def position(self, position: Point):
-        logging.debug('position setter method called, position: ' + str(position))
+        logging.debug(str(position))
         if isinstance(position, Point):
             self._position = position
         else:
@@ -29,7 +29,7 @@ class Animal:
 
     @distance.setter
     def distance(self, distance: float):
-        logging.debug(f'distance setter method called, distance: {distance}')
+        logging.debug(distance)
         if isinstance(distance, float):
             self._distance = distance
         else:
@@ -37,6 +37,7 @@ class Animal:
             raise TypeError('distance must be float type!')
 
     def move(self):
+        logging.debug(f'{type(self).__name__} is moving from {self._position}')
         self._position += self.update_distance()
 
     @abstractmethod

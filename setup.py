@@ -1,4 +1,4 @@
-from setuptools import setuptools
+import setuptools
 
 setuptools.setup(
     name='full_wolf_but_sheep_dead',

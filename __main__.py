@@ -19,7 +19,7 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--directory',
                         dest='directory',
                         type=str,
-                        default='',
+                        default='logs',
                         help='Choose directory where outcome files will be saved')
 
     parser.add_argument('-l', '--level',
@@ -66,15 +66,15 @@ if __name__ == '__main__':
     logging.basicConfig(filename=directory + 'chase.log',
                         level=args.level,
                         filemode='w',
-                        format='%(asctime)s - %(module)s: %(levelname)s: %(message)s',
-                        datefmt='%d/%m/%Y %I:%M:%S %p')
+                        format='%(asctime)s.%(msecs)03d [%(levelname)s] [%(module)s -> %(funcName)s] %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S')
 
     if args.rounds_number <= 0:
-        logging.error('Fatal error: round number is less than 0!')
+        logging.critical('Round number is less than 0!')
         raise ValueError('rounds number must be greater than 0')
 
     if args.sheep_number <= 0:
-        logging.error('Fatal error: sheep number is less than 0!')
+        logging.critical('Sheep number is less than 0!')
         raise ValueError('sheep number must be greater than 0')
 
     if args.config is None:
@@ -88,18 +88,18 @@ if __name__ == '__main__':
 
         config = ConfigParser()
         config.read(args.config)
-        init_pos_limit = float(config['Terrain']['InitPosLimit'])
+        init_pos_limit = int(config['Terrain']['InitPosLimit'])
         sheep_move_dist = float(config['Movement']['SheepMoveDist'])
         wolf_move_dist = float(config['Movement']['WolfMoveDist'])
 
         if init_pos_limit <= 0:
-            logging.error('Fatal error: init pos limit is less than 0!')
+            logging.critical('Init pos limit is less than 0!')
             raise ValueError('init pos limit must be greater than 0')
-        if sheep_move_dist <= 0:
-            logging.error('Fatal error: sheep move dist is less than 0!')
+        if sheep_move_dist <= 0.0:
+            logging.critical('Sheep move dist is less than 0!')
             raise ValueError('sheep move dist must be greater than 0')
-        if wolf_move_dist <= 0:
-            logging.error('Fatal error: wolf move dist is less than 0!')
+        if wolf_move_dist <= 0.0:
+            logging.critical('Wolf move dist is less than 0!')
             raise ValueError('wolf move dist must be greater than 0')
 
     simulation = Simulation(args.rounds_number, args.sheep_number, init_pos_limit, sheep_move_dist, wolf_move_dist,
@@ -107,7 +107,7 @@ if __name__ == '__main__':
 
     turns_data, alive_animals_data = simulation.simulate()
 
-    logging.debug('Attempting to write pos.json file to' + directory)
+    logging.debug('Attempting to write pos.json file to ' + directory)
     with open(directory + 'pos.json', 'w') as pos:
         dump = json.dumps(turns_data)
         pos.write(dump.replace('},', '},\n'))
