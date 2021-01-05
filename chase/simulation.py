@@ -79,7 +79,7 @@ class Simulation:
 
             print('#######')
             print(self.wolf)
-            remaining_message = str(len(self.get_alive_animals())) + ' animals are alive'
+            remaining_message = str(len(self.get_alive_animals())) + ' sheep are alive'
             logging.info(remaining_message)
             print(remaining_message)
             print('#######\n')

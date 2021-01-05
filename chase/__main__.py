@@ -14,12 +14,12 @@ if __name__ == '__main__':
     parser.add_argument('-c', '--config',
                         metavar='FILE',
                         dest='config',
-                        help='Gets default arguments of simulation from config FILE')
+                        help='Get default arguments of simulation from config FILE')
 
     parser.add_argument('-d', '--directory',
                         dest='directory',
                         type=str,
-                        default='logs',
+                        default='chase/logs',
                         help='Choose directory where outcome files will be saved')
 
     parser.add_argument('-l', '--level',
@@ -34,14 +34,14 @@ if __name__ == '__main__':
                         type=int,
                         default=50,
                         dest='rounds_number',
-                        help='Sets a number of rounds (NUM is an integer value)')
+                        help='Set a number of rounds (NUM is an integer value)')
 
     parser.add_argument('-s', '--sheep',
                         metavar='NUM',
                         type=int,
                         default=15,
                         dest='sheep_number',
-                        help='Sets a number of sheep (NUM is an integer value)')
+                        help='Set a number of sheep (NUM is an integer value)')
 
     parser.add_argument('-w', '--wait',
                         action='store_true',
@@ -114,8 +114,8 @@ if __name__ == '__main__':
     logging.debug(directory + 'pos.json has been written successfully')
 
     logging.debug('Attempting to write alive.csv to ' + directory)
-    with open(directory + 'alive.csv', 'w') as alive:
-        writer = csv.writer(alive)
-        writer.writerow(['Rounds number', 'Alive sheep number'])
+    with open(directory + 'alive.csv', 'w', newline='') as alive:
+        writer = csv.writer(alive, delimiter='\n')
+        writer.writerow(['Rounds number, Alive sheep number'])
         writer.writerow(alive_animals_data)
     logging.debug(directory + 'alive.csv has been written successfully')
