@@ -3,8 +3,8 @@ from enum import Enum, auto
 from math import floor
 from random import uniform
 
-from animal import Animal
-from point import Point
+from chase.animal import Animal
+from chase.point import Point
 
 
 class WindRose(Enum):

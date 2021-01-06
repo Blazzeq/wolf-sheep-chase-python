@@ -1,10 +1,9 @@
 import logging
-from msvcrt import getch
 from typing import List
 
-from animal import Animal
-from sheep import Sheep
-from wolf import Wolf
+from chase.animal import Animal
+from chase.sheep import Sheep
+from chase.wolf import Wolf
 
 
 class Simulation:
@@ -100,7 +99,7 @@ class Simulation:
             logging.info('Round #' + str(turn) + ' has ended\n')
 
             if self.wait:
-                getch()
+                input()
 
             turn += 1
 

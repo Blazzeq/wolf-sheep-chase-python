@@ -1,7 +1,7 @@
 import logging
 from abc import abstractmethod
 
-from point import Point
+from chase.point import Point
 
 
 class Animal:

@@ -2,8 +2,8 @@ import logging
 from math import sqrt, pow
 from typing import List, Tuple
 
-from animal import Animal
-from point import Point
+from chase.animal import Animal
+from chase.point import Point
 
 
 class Wolf(Animal):

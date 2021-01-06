@@ -6,7 +6,7 @@ import os.path
 from configparser import ConfigParser
 from os import mkdir
 
-from simulation import Simulation
+from chase.simulation import Simulation
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog="full_wolf_but_sheep_dead")
@@ -19,7 +19,7 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--directory',
                         dest='directory',
                         type=str,
-                        default='chase/logs',
+                        default='',
                         help='Choose directory where outcome files will be saved')
 
     parser.add_argument('-l', '--level',
@@ -63,11 +63,12 @@ if __name__ == '__main__':
         logging.debug('Directory "' + directory + '" does not exist, creating a new one')
         mkdir(directory)
 
-    logging.basicConfig(filename=directory + 'chase.log',
-                        level=args.level,
-                        filemode='w',
-                        format='%(asctime)s.%(msecs)03d [%(levelname)s] [%(module)s -> %(funcName)s] %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S')
+    if args.level:
+        logging.basicConfig(filename=directory + 'chase.log',
+                            level=args.level,
+                            filemode='w',
+                            format='%(asctime)s.%(msecs)03d [%(levelname)s] [%(module)s -> %(funcName)s] %(message)s',
+                            datefmt='%Y-%m-%d %H:%M:%S')
 
     if args.rounds_number <= 0:
         logging.critical('Round number is less than 0!')
@@ -109,13 +110,13 @@ if __name__ == '__main__':
 
     logging.debug('Attempting to write pos.json file to ' + directory)
     with open(directory + 'pos.json', 'w') as pos:
-        dump = json.dumps(turns_data)
-        pos.write(dump.replace('},', '},\n'))
+        json.dump(turns_data, pos, indent=4, sort_keys=True)
     logging.debug(directory + 'pos.json has been written successfully')
 
     logging.debug('Attempting to write alive.csv to ' + directory)
     with open(directory + 'alive.csv', 'w', newline='') as alive:
-        writer = csv.writer(alive, delimiter='\n')
-        writer.writerow(['Rounds number, Alive sheep number'])
-        writer.writerow(alive_animals_data)
+        writer = csv.DictWriter(alive, fieldnames=['Rounds number', 'Alive sheep number'])
+        writer.writeheader()
+        for row in alive_animals_data:
+            writer.writerow({'Rounds number': row[0], 'Alive sheep number': row[1]})
     logging.debug(directory + 'alive.csv has been written successfully')
