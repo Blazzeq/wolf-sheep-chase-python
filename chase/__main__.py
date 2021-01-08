@@ -1,15 +1,14 @@
-import argparse
 import csv
 import json
 import logging
-import os.path
+from argparse import ArgumentParser
 from configparser import ConfigParser
-from os import mkdir
+from os import mkdir, path
 
 from chase.simulation import Simulation
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(prog="full_wolf_but_sheep_dead")
+    parser = ArgumentParser(prog="full_wolf_but_sheep_dead")
 
     parser.add_argument('-c', '--config',
                         metavar='FILE',
@@ -50,18 +49,10 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    if args.level != 0 and [10, 20, 30, 40, 50].__contains__(args.level) is False:
-        raise ValueError('Level must be equal to either 10 (DEBUG), 20 (INFO), 30 (WARNING), 40 (ERROR) or 50 '
-                         '(CRITICAL)')
-
     if args.directory != '' and args.directory[0] == '/':
         raise ValueError('Simulation data can be only saved in a subdirectory')
 
     directory = './' + args.directory + ('/' if args.directory != '' and args.directory[-1] != '/' else '')
-
-    if os.path.exists(directory) is False:
-        logging.debug('Directory "' + directory + '" does not exist, creating a new one')
-        mkdir(directory)
 
     if args.level:
         logging.basicConfig(filename=directory + 'chase.log',
@@ -69,6 +60,15 @@ if __name__ == '__main__':
                             filemode='w',
                             format='%(asctime)s.%(msecs)03d [%(levelname)s] [%(module)s -> %(funcName)s] %(message)s',
                             datefmt='%Y-%m-%d %H:%M:%S')
+        logging.debug('Logging has been enabled')
+
+    if args.level != 0 and [10, 20, 30, 40, 50].__contains__(args.level) is False:
+        raise ValueError(
+            'Level must be equal to either 10 (DEBUG), 20 (INFO), 30 (WARNING), 40 (ERROR) or 50 (CRITICAL)')
+
+    if path.exists(directory) is False:
+        logging.debug(f'Directory "{directory}" does not exist, creating a new one...')
+        mkdir(directory)
 
     if args.rounds_number <= 0:
         logging.critical('Round number is less than 0!')
@@ -83,7 +83,7 @@ if __name__ == '__main__':
         sheep_move_dist = 0.5
         wolf_move_dist = 1.0
     else:
-        if os.path.exists(args.config) is False:
+        if path.exists(args.config) is False:
             logging.error('File does not exists')
             raise IOError('File does not exists')
 
@@ -109,14 +109,14 @@ if __name__ == '__main__':
     turns_data, alive_animals_data = simulation.simulate()
 
     logging.debug('Attempting to write pos.json file to ' + directory)
-    with open(directory + 'pos.json', 'w') as pos:
-        json.dump(turns_data, pos, indent=4, sort_keys=True)
+    with open(directory + 'pos.json', 'w', encoding='utf-8') as pos:
+        json.dump(turns_data, pos, indent=2, sort_keys=True)
     logging.debug(directory + 'pos.json has been written successfully')
 
     logging.debug('Attempting to write alive.csv to ' + directory)
-    with open(directory + 'alive.csv', 'w', newline='') as alive:
+    with open(directory + 'alive.csv', 'w', newline='', encoding='utf-8') as alive:
         writer = csv.DictWriter(alive, fieldnames=['Rounds number', 'Alive sheep number'])
         writer.writeheader()
         for row in alive_animals_data:
             writer.writerow({'Rounds number': row[0], 'Alive sheep number': row[1]})
-    logging.debug(directory + 'alive.csv has been written successfully')
+    logging.debug(f'{directory}alive.csv has been written successfully')

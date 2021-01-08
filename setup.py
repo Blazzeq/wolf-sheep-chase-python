@@ -1,4 +1,5 @@
 import setuptools
+
 with open('README.md', 'r') as fh:
     long_description = fh.read()
 
@@ -13,5 +14,5 @@ setuptools.setup(
     url='https://github.com/Blazzeq/full_wolf_but_sheep_dead/',
     packages=setuptools.find_packages(),
     license='MIT License',
-    python_requires='>=3.6'
+    python_requires='>=3.8'
 )

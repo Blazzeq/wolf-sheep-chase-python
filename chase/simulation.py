@@ -9,13 +9,16 @@ from chase.wolf import Wolf
 class Simulation:
     def __init__(self, rounds: int, sheep_number: int, init_pos_limit: float, sheep_move_dist: float,
                  wolf_move_dist: float, wait: bool):
+        logging.debug(f'rounds: {rounds}, sheep_number: {sheep_number}, init_pos_limit: {init_pos_limit},'
+                      f'sheep_move_dist: {sheep_move_dist}, wolf_move_dist: {wolf_move_dist}, wait: {wait}')
+        logging.info('Initialize of the simulation')
 
         self.rounds = rounds
         self._animal = []
 
         for _ in range(sheep_number):
             s = Sheep(init_pos_limit, sheep_move_dist)
-            logging.info('Sheep #' + str(_) + ' start position at ' + str(s.position))
+            logging.info(f'Sheep #{_} start position at {s.position}')
             self.animal.append(s)
 
         self._wolf = Wolf(wolf_move_dist, self.animal)
@@ -54,7 +57,9 @@ class Simulation:
         return result
 
     def are_sheep_alive(self) -> bool:
-        return len(self.get_alive_animals()) != 0
+        alive = len(self.get_alive_animals()) != 0
+        logging.debug(f'returns: {alive}')
+        return alive
 
     def simulate(self) -> [List, List]:
         turn = 0
@@ -65,8 +70,8 @@ class Simulation:
         print('Start of the simulation\n')
 
         while turn != self.rounds and self.are_sheep_alive():
-            logging.info('Round #' + str(turn) + ' has started')
-            print('Round #' + str(turn))
+            logging.info(f'Round #{turn} has started')
+            print(f'Round #{turn}')
 
             for _ in self.animal:
                 if _ is not None:
@@ -96,7 +101,7 @@ class Simulation:
 
             csv.append([turn, len(self.get_alive_animals())])
 
-            logging.info('Round #' + str(turn) + ' has ended\n')
+            logging.info(f'Round #{turn} has ended\n')
 
             if self.wait:
                 input()

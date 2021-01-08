@@ -6,9 +6,9 @@ from chase.point import Point
 
 class Animal:
     def __init__(self, position: Point, distance: float):
-        logging.debug(f'position: {position}, distance: {distance}')
         self._position = position
         self._distance = distance
+        logging.debug(f'position: {position}, distance: {distance}')
 
     @property
     def position(self) -> Point:
@@ -29,15 +29,15 @@ class Animal:
 
     @distance.setter
     def distance(self, distance: float):
-        logging.debug(distance)
         if isinstance(distance, float):
             self._distance = distance
+            logging.debug(f'distance: {distance}')
         else:
             logging.error('distance must be float type!')
             raise TypeError('distance must be float type!')
 
     def move(self):
-        logging.debug(f'{type(self).__name__} is moving from {self._position}')
+        logging.info(f'{type(self).__name__} is moving from {self._position}')
         self._position += self.update_distance()
 
     @abstractmethod
