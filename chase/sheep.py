@@ -22,7 +22,7 @@ class Sheep(Animal):
         WindRose.WEST: [-1, 0]
     }
 
-    def __init__(self, init_pos_limit: float = 10, sheep_move_dist: float = 0.5):
+    def __init__(self, init_pos_limit: float = 10.0, sheep_move_dist: float = 0.5):
         super().__init__(Point(uniform(-init_pos_limit, init_pos_limit),
                                uniform(-init_pos_limit, init_pos_limit)),
                          sheep_move_dist)

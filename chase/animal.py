@@ -16,9 +16,9 @@ class Animal:
 
     @position.setter
     def position(self, position: Point):
-        logging.debug(str(position))
         if isinstance(position, Point):
             self._position = position
+            logging.debug(position)
         else:
             logging.error('position must be Point type!')
             raise TypeError('position must be Point type!')

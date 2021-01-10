@@ -79,7 +79,7 @@ if __name__ == '__main__':
         raise ValueError('sheep number must be greater than 0')
 
     if args.config is None:
-        init_pos_limit = 10
+        init_pos_limit = 10.0
         sheep_move_dist = 0.5
         wolf_move_dist = 1.0
     else:
@@ -89,11 +89,11 @@ if __name__ == '__main__':
 
         config = ConfigParser()
         config.read(args.config)
-        init_pos_limit = int(config['Terrain']['InitPosLimit'])
+        init_pos_limit = float(config['Terrain']['InitPosLimit'])
         sheep_move_dist = float(config['Movement']['SheepMoveDist'])
         wolf_move_dist = float(config['Movement']['WolfMoveDist'])
 
-        if init_pos_limit <= 0:
+        if init_pos_limit <= 0.0:
             logging.critical('Init pos limit is less than 0!')
             raise ValueError('init pos limit must be greater than 0')
         if sheep_move_dist <= 0.0:

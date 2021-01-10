@@ -40,7 +40,6 @@ class Wolf(Animal):
         self.animal[sheep_index] = None
 
     def update_distance(self) -> Point:
-
         victim, can_be_killed, dist_to_victim = self.look_back(self.animal)
         victim_index = self.animal.index(victim)
 
