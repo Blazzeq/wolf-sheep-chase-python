@@ -25,8 +25,8 @@ if __name__ == '__main__':
                         dest='level',
                         type=int,
                         default=0,
-                        help='Choose level of logging, must be a number'
-                             ' (DEBUG - 10, INFO - 20, WARNING - 30, ERROR - 40, CRITICAL - 50')
+                        help='Choose level of logging, must be a number (DEBUG - 10, INFO - 20, WARNING - 30, '
+                             'ERROR - 40, CRITICAL - 50)')
 
     parser.add_argument('-r', '--rounds',
                         metavar='NUM',
